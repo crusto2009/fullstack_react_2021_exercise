@@ -3,8 +3,8 @@ import './App.css'
 
 function App() {
 
-  let numero = [0, 1, 2, 3, 4,5]
-  
+  let numero = [0, 1, 2, 3, 4, 5]
+
 
   const anecdotes = [
     'If it hurts, do it more often',
@@ -31,37 +31,70 @@ function App() {
   }
 
 
-  const handleNextAnecdota = () => {    
+
+  const handleNextAnecdota = () => {
     setSelected(generarNumeroAleatorio())
   }
 
-  const handleVoteAnectoda= () => {
+  const handleVoteAnectoda = () => {
 
-    let copy = {...points}
-    let positionSeledtecAnecdota = selected.toString()
-    console.log(typeof(positionSeledtecAnecdota))
+    let copy = { ...points }
+    let positionSeledtecAnecdota: number = parseInt(selected.toString())
+    console.log(positionSeledtecAnecdota)
 
-    copy[0] +=1
+    copy[positionSeledtecAnecdota as keyof typeof points] += 1
 
     setPoints(copy)
+  }
+
+
+  const filterBestAnecdota = () => {
+    let menor = -Infinity
+    let indexMayor = null
+
+
+    Object.values(points).map((value, index) => {
+      let valor = points[index as keyof typeof points]
+      if (valor > menor) {
+        menor = valor;
+        indexMayor = index
+      }
+    })
+
+
+    return indexMayor
   }
 
   const [selected, setSelected] = useState(0)
 
   const [points, setPoints] = useState({
-    0:0,
-    1:0,
-    2:0,
-    3:0,
-    4:0,
-    5:0
+    0: 0,
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0
   })
+
+  let best = filterBestAnecdota() ?? null
+  let contentBestAnecdota = null
+
+  if (best != null) {
+    contentBestAnecdota = <>
+      {anecdotes[best as keyof typeof points]}
+      <span>Has{points[best]} votes</span>
+    </>
+  } 
 
   return (
     <>
       <div>{anecdotes[selected]}</div>
       <button onClick={handleNextAnecdota}>Next anecdota</button>
       <button onClick={handleVoteAnectoda}>Vote</button>
+
+      <h2>Best Anecdote</h2>
+      {contentBestAnecdota}
+      
     </>
   )
 }
