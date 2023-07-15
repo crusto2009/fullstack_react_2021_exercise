@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import { UserList } from './components/UserList'
+import { FormUsers } from './components/FormUsers'
 
 function App() {
   const [persons, setPersons] = useState([
@@ -13,30 +15,31 @@ function App() {
 
   const handleAddPerson = (event: any) => {
     event.preventDefault()
-    setPersons(persons.concat({ name: newName }))
-    setNewName('')
+    const find = persons.some((persona) => {
+      return persona.name === newName
+    })
+    if (find) {
+      alert(`${newName}, "Ya se encuentra registrado.`)
+    } else {
+      setPersons(persons.concat({ name: newName }))
+      setNewName('')
+    }
   }
 
   return (
     <>
       <div>
         <h2>Phonebook</h2>
-        <form onSubmit={handleAddPerson}>
+        <FormUsers newName={newName} handleAddPerson={handleAddPerson} handleChange={handleChange}></FormUsers>
+        {/* <form onSubmit={handleAddPerson}>
           <div>
             name: <input value={newName} onChange={handleChange} />
           </div>
           <div>
             <button type="submit">add</button>
           </div>
-        </form>
-        <h2>Numbers</h2>
-        <ul>
-        {
-          persons.map((person: any) => {
-            return <li key={person.name}>{person.name}</li>
-          })
-        }
-        </ul>
+        </form> */}
+        <UserList persons={persons}></UserList>
       </div>
     </>
   )
