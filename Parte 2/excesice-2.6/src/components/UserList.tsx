@@ -8,7 +8,7 @@ export const UserList = ({persons}:any) => {
             <ul>
                 {
                     persons.map((person: any) => {                        
-                        return <UserListtems name={person.name}></UserListtems>
+                        return <UserListtems key={person.name} name={person.name} phone={person.number}></UserListtems>
                     })
                 }
             </ul>

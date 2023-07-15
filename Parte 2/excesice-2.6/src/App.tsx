@@ -2,15 +2,36 @@ import { useState } from 'react'
 import './App.css'
 import { UserList } from './components/UserList'
 import { FormUsers } from './components/FormUsers'
+import { FindUsers } from './components/FindUsers'
 
 function App() {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
   const [newName, setNewName] = useState('')
+  const [findPerson, setFindPerson] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
-  const handleChange = (event: any) => {
+  const handleFilterPerson = (event: any) => {
+    setFindPerson(event.target.value)
+  }
+
+  const showPersons = () => {
+    return findPerson === '' ? persons : persons.filter((person) => {
+      return person.name.includes(findPerson)
+    })
+  }
+
+
+  const handleChangeName = (event: any) => {
     setNewName(event.target.value)
+  }
+
+  const handleChangeNumber = (event: any) => {
+    setNewNumber(event.target.value)
   }
 
   const handleAddPerson = (event: any) => {
@@ -21,8 +42,13 @@ function App() {
     if (find) {
       alert(`${newName}, "Ya se encuentra registrado.`)
     } else {
-      setPersons(persons.concat({ name: newName }))
+      setPersons(persons.concat(
+        {
+          name: newName,
+          number: newNumber
+        }))
       setNewName('')
+      setNewNumber('')
     }
   }
 
@@ -30,16 +56,10 @@ function App() {
     <>
       <div>
         <h2>Phonebook</h2>
-        <FormUsers newName={newName} handleAddPerson={handleAddPerson} handleChange={handleChange}></FormUsers>
-        {/* <form onSubmit={handleAddPerson}>
-          <div>
-            name: <input value={newName} onChange={handleChange} />
-          </div>
-          <div>
-            <button type="submit">add</button>
-          </div>
-        </form> */}
-        <UserList persons={persons}></UserList>
+        <FindUsers findPerson={findPerson} handleFilterPerson={handleFilterPerson} />
+        <hr />
+        <FormUsers newName={newName} newNumber={newNumber} handleAddPerson={handleAddPerson} handleChangeName={handleChangeName} handleChangeNumber={handleChangeNumber}></FormUsers>
+        <UserList persons={showPersons()}></UserList>
       </div>
     </>
   )

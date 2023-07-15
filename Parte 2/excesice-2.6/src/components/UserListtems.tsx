@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const UserListtems = ({ name }: any) => {
+export const UserListtems = ({ name,phone }: any) => {
     return (
         <>
-            <li>{name}</li>
+            <li>{name}-{phone}</li>
         </>
     )
 }
