@@ -1,19 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { UserList } from './components/UserList'
 import { FormUsers } from './components/FormUsers'
 import { FindUsers } from './components/FindUsers'
 
+import axios from 'axios'
+
+
 function App() {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const person: any[] = [];
+  const [persons, setPersons] = useState(person)
   const [newName, setNewName] = useState('')
   const [findPerson, setFindPerson] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3000/notes')
+      .then((response) => {
+        setPersons(response.data)
+      })
+
+  }, [])
+
 
   const handleFilterPerson = (event: any) => {
     setFindPerson(event.target.value)
