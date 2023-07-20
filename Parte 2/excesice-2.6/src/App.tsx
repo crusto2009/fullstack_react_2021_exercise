@@ -3,11 +3,13 @@ import './App.css'
 import { UserList } from './components/UserList'
 import { FormUsers } from './components/FormUsers'
 import { FindUsers } from './components/FindUsers'
+import UserService from './components/Services/UserService'
 
-import axios from 'axios'
+
 
 
 function App() {
+
   const person: any[] = [];
   const [persons, setPersons] = useState(person)
   const [newName, setNewName] = useState('')
@@ -15,10 +17,10 @@ function App() {
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3000/notes')
-      .then((response) => {
-        setPersons(response.data)
+
+    UserService.getAll()
+      .then((Users: any) => {
+        setPersons(Users)
       })
 
   }, [])
@@ -51,13 +53,21 @@ function App() {
     if (find) {
       alert(`${newName}, "Ya se encuentra registrado.`)
     } else {
-      setPersons(persons.concat(
-        {
-          name: newName,
-          number: newNumber
-        }))
-      setNewName('')
-      setNewNumber('')
+      const person = {
+        name: newName,
+        number: newNumber
+      }
+
+      UserService.create(person)
+        .then((Newcontact: any) => {
+          console.log(Newcontact)
+          setPersons(persons.concat(Newcontact))
+          setNewName('')
+          setNewNumber('')
+        })
+
+     
+     
     }
   }
 
