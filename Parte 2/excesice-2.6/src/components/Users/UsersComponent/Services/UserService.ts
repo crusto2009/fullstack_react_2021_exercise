@@ -13,6 +13,16 @@ const create = (contact: any) => {
     return request.then((response) => response.data)
 }
 
+const update = (id: any,updatecontact:any) => {
+    const request = axios.put(`${urlBase}/${urlPath}/${id}`,updatecontact)
+    return request.then((response) => response.data)
+}
+
+const remove = (id: any) => {
+    const request = axios.delete(`${urlBase}/${urlPath}/${id}`)
+    return request.then((response) => response.data)
+}
 
 
-export default { getAll, create }
+
+export default { getAll, create, update, remove }

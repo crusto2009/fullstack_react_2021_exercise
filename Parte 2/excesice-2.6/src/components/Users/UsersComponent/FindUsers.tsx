@@ -3,7 +3,7 @@ import React from 'react'
 export const FindUsers = ({ findPerson, handleFilterPerson }: any) => {
     return (
         <>
-            Filtrar:
+            Filter:
             <form >
                 <input value={findPerson} onChange={handleFilterPerson} />
             </form>
